@@ -12,12 +12,25 @@ const DropBox = ({ names }: DropBox) => {
 
   const toggleOpen = () => setIsOpen((prev) => !prev);
 
+  const handleSelect = (name: IName) => {
+    setSelectedName(name);
+    setIsOpen(false);
+  };
+
   return (
     <Container>
       <DropBoxButton onClick={toggleOpen}>
         {selectedName?.name || "김초연"}
       </DropBoxButton>
-      {isOpen && <Options></Options>}
+      {isOpen && (
+        <Options>
+          {names.map((name) => (
+            <OptionItems key={name.id} onClick={() => handleSelect(name)}>
+              {name.name}
+            </OptionItems>
+          ))}
+        </Options>
+      )}
     </Container>
   );
 };
@@ -31,7 +44,7 @@ const Container = styled.div`
 const DropBoxButton = styled.button`
   width: 100%;
   padding: 6px 10px;
-  background: white;
+  background-color: #fff;
   border: 1px solid #000;
   border-radius: 4px;
   cursor: pointer;
@@ -41,14 +54,16 @@ const DropBoxButton = styled.button`
 `;
 
 const Options = styled.ul`
-  background: white;
+  background-color: #fff;
   border-radius: 4px;
   border: none;
   display: flex;
   padding: 8px;
   margin: 2px 0;
   flex-direction: column;
-  align-items: flex-start;
   gap: 12px;
-  align-self: stretch;
+`;
+
+const OptionItems = styled.div`
+  cursor: pointer;
 `;
