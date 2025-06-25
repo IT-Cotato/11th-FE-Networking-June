@@ -1,12 +1,34 @@
 import { useRef, useState } from "react";
 import type { IName } from "../types/name";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Chevron from "../assets/chevron-up.svg";
 import { useOutsideClick } from "./../hooks/useOutSideClick";
 
 interface DropBox {
   names: IName[];
 }
+
+const slideDown = keyframes`
+  from {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+`;
+
+const slideUp = keyframes`
+  from {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  to {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+`;
 
 const DropBox = ({ names }: DropBox) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,15 +50,13 @@ const DropBox = ({ names }: DropBox) => {
         {selectedName?.name || "김초연"}
         <ChevronImg src={Chevron} isOpen={isOpen} />
       </DropBoxButton>
-      {isOpen && (
-        <Options>
-          {names.map((name) => (
-            <OptionItems key={name.id} onClick={() => handleSelect(name)}>
-              {name.name}
-            </OptionItems>
-          ))}
-        </Options>
-      )}
+      <Options isOpen={isOpen}>
+        {names.map((name) => (
+          <OptionItems key={name.id} onClick={() => handleSelect(name)}>
+            {name.name}
+          </OptionItems>
+        ))}
+      </Options>
     </Container>
   );
 };
@@ -61,17 +81,23 @@ const DropBoxButton = styled.button`
 
 const ChevronImg = styled.img<{ isOpen: boolean }>`
   transform: ${({ isOpen }) => (isOpen ? "rotate(180deg)" : "rotate(0deg)")};
+  transition: transform 0.3s ease;
 `;
 
-const Options = styled.ul`
+const Options = styled.ul<{ isOpen: boolean }>`
   background-color: #fff;
   border-radius: 4px;
-  border: none;
+  border: 1px solid #000;
   display: flex;
   padding: 8px;
   margin: 2px 0;
   flex-direction: column;
   gap: 12px;
+
+  animation-name: ${({ isOpen }) => (isOpen ? slideDown : slideUp)};
+  transform-origin: top;
+  animation-fill-mode: forwards;
+  animation-duration: 0.3s;
 `;
 
 const OptionItems = styled.div`
