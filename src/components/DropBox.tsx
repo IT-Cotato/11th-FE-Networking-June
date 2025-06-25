@@ -8,7 +8,7 @@ interface DropBox {
   names: IName[];
 }
 
-const slideDown = keyframes`
+const slideIn = keyframes`
   from {
     transform: scaleY(0);
     opacity: 0;
@@ -19,7 +19,7 @@ const slideDown = keyframes`
   }
 `;
 
-const slideUp = keyframes`
+const slideOut = keyframes`
   from {
     transform: scaleY(1);
     opacity: 1;
@@ -31,7 +31,7 @@ const slideUp = keyframes`
 `;
 
 const DropBox = ({ names }: DropBox) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedName, setSelectedName] = useState<IName | null>(null);
   const dropboxRef = useRef<HTMLDivElement>(null);
 
@@ -94,7 +94,7 @@ const Options = styled.ul<{ isOpen: boolean }>`
   flex-direction: column;
   gap: 12px;
 
-  animation-name: ${({ isOpen }) => (isOpen ? slideDown : slideUp)};
+  animation-name: ${({ isOpen }) => (isOpen ? slideIn : slideOut)};
   transform-origin: top;
   animation-fill-mode: forwards;
   animation-duration: 0.3s;
