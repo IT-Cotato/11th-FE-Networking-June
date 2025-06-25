@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { IName } from "../types/name";
 import styled from "styled-components";
 import Chevron from "../assets/chevron-up.svg";
+import { useOutsideClick } from "./../hooks/useOutSideClick";
 
 interface DropBox {
   names: IName[];
@@ -10,6 +11,7 @@ interface DropBox {
 const DropBox = ({ names }: DropBox) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedName, setSelectedName] = useState<IName | null>(null);
+  const dropboxRef = useRef<HTMLDivElement>(null);
 
   const toggleOpen = () => setIsOpen((prev) => !prev);
 
@@ -18,8 +20,10 @@ const DropBox = ({ names }: DropBox) => {
     setIsOpen(false);
   };
 
+  useOutsideClick(dropboxRef, () => setIsOpen(false));
+
   return (
-    <Container>
+    <Container ref={dropboxRef}>
       <DropBoxButton onClick={toggleOpen}>
         {selectedName?.name || "김초연"}
         <ChevronImg src={Chevron} isOpen={isOpen} />
