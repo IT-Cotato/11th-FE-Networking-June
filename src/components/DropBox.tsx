@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { IName } from "../types/name";
 import styled from "styled-components";
+import Chevron from "../assets/chevron-up.svg";
 
 interface DropBox {
   names: IName[];
@@ -21,6 +22,7 @@ const DropBox = ({ names }: DropBox) => {
     <Container>
       <DropBoxButton onClick={toggleOpen}>
         {selectedName?.name || "김초연"}
+        <ChevronImg src={Chevron} isOpen={isOpen} />
       </DropBoxButton>
       {isOpen && (
         <Options>
@@ -51,6 +53,10 @@ const DropBoxButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+const ChevronImg = styled.img<{ isOpen: boolean }>`
+  transform: ${({ isOpen }) => (isOpen ? "rotate(180deg)" : "rotate(0deg)")};
 `;
 
 const Options = styled.ul`
