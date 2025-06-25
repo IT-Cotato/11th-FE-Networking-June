@@ -48,9 +48,9 @@ const DropBox = ({ names }: DropBox) => {
     <Container ref={dropboxRef}>
       <DropBoxButton onClick={toggleOpen}>
         {selectedName?.name || "김초연"}
-        <ChevronImg src={Chevron} isOpen={isOpen} />
+        <ChevronImg src={Chevron} $isOpen={isOpen} />
       </DropBoxButton>
-      <Options isOpen={isOpen}>
+      <Options $isOpen={isOpen}>
         {names.map((name) => (
           <OptionItems key={name.id} onClick={() => handleSelect(name)}>
             {name.name}
@@ -79,23 +79,22 @@ const DropBoxButton = styled.button`
   justify-content: space-between;
 `;
 
-const ChevronImg = styled.img<{ isOpen: boolean }>`
-  transform: ${({ isOpen }) => (isOpen ? "rotate(180deg)" : "rotate(0deg)")};
+const ChevronImg = styled.img<{ $isOpen: boolean }>`
+  transform: ${({ $isOpen }) => ($isOpen ? "rotate(180deg)" : "rotate(0deg)")};
   transition: transform 0.3s ease;
 `;
 
-const Options = styled.ul<{ isOpen: boolean }>`
+const Options = styled.ul<{ $isOpen: boolean }>`
   background-color: #fff;
   border-radius: 4px;
-  border: 1px solid #000;
   display: flex;
   padding: 8px;
   margin: 2px 0;
   flex-direction: column;
   gap: 12px;
 
-  animation-name: ${({ isOpen }) => (isOpen ? slideIn : slideOut)};
   transform-origin: top;
+  animation-name: ${({ $isOpen }) => ($isOpen ? slideIn : slideOut)};
   animation-fill-mode: forwards;
   animation-duration: 0.3s;
 `;
