@@ -12,13 +12,20 @@ const DropBox = ({ names }: DropBox) => {
   const optionsRef = useRef<HTMLDivElement | null>(null);
 
   const [show, setShow] = useState(false);
+  const [selected, setSelected] = useState("조원영");
 
   useOnClickOutside(optionsRef, () => setShow(false));
 
   return (
     <div className="flex w-100 flex-col items-start gap-2">
-      <DropBoxSelect name={"조원영"} show={show} setShow={setShow} />
-      {show && <DropBoxOptions names={names} ref={optionsRef} />}
+      <DropBoxSelect name={selected} show={show} setShow={setShow} />
+      {show && (
+        <DropBoxOptions
+          names={names}
+          ref={optionsRef}
+          setSelected={setSelected}
+        />
+      )}
     </div>
   );
 };
