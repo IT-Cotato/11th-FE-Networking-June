@@ -16,3 +16,7 @@ body {
   display: grid;
   place-items: center;
 }
+
+@theme {
+  --spacing: 1px;
+}
