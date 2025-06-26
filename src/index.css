@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+:root {
+  color: #000;
+  font-family: "Pretendard";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
 body {
   margin: 0;
   width: 100vw;
