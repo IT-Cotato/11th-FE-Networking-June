@@ -18,7 +18,10 @@ const DropBoxSelect: React.FC<DropBoxSelectProps> = ({
       className="flex p-[6px_10px] items-center self-stretch rounded-[4px] border-1 border-solid border-black bg-white"
     >
       <div className="w-56">{name}</div>
-      <ChevronUp className="w-24 h-24 aspect-square" />
+      <ChevronUp
+        className="w-24 h-24 aspect-square"
+        style={{ transform: `rotate(${show ? 180 : 0}deg)` }}
+      />
     </div>
   );
 };
