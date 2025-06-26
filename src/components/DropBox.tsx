@@ -17,16 +17,33 @@ const DropBox = ({ names }: DropBox) => {
     setIsOpen(false);
   };
   return (
-    <div>
-      <div>
-        <button onClick={handleToggle}>
-          <span>{selected ? selected.name : "이름을 입력하세요"}</span>
-          <img src="/src/assets/chevron-up.svg" alt="토글 아이콘" />
+    <div className="min-h-screen w-full bg-gray-350 p-4 flex justify-center items-start">
+      <div className="relative min-w-[100px]">
+        <button
+          onClick={handleToggle}
+          className="w-full bg-white border border-black rounded-sm px-[10px] py-[6px] flex items-start justify-between  focus:outline-none"
+        >
+          <div className="flex w-full items-start justify-between">
+            <span className="text-left">
+              {selected ? selected.name : "이름을 선택하세요"}
+            </span>
+            <img
+              src="/src/assets/chevron-up.svg"
+              alt="토글 아이콘"
+              className={`transform transition-transform duration-200 ${
+                isOpen ? "" : "rotate-180"
+              }`}
+            />
+          </div>
         </button>
         {isOpen && (
-          <div>
+          <div className="absolute top-full left-0 right-0 mt-[2px] bg-white rounded-sm py-2 z-10 flex flex-col">
             {names.map((item) => (
-              <button key={item.id} onClick={() => handleSelect(item)}>
+              <button
+                key={item.id}
+                onClick={() => handleSelect(item)}
+                className="w-full text-left px-2 py-[6px] hover:bg-gray-100 rounded-sm"
+              >
                 {item.name}
               </button>
             ))}
