@@ -23,13 +23,15 @@ const DropBox = ({ names }: DropBox) => {
           <span>{selected ? selected.name : "이름을 입력하세요"}</span>
           <img src="/src/assets/chevron-up.svg" alt="토글 아이콘" />
         </button>
-      </div>
-      <div>
-        {names.map((item) => (
-          <button key={item.id} onClick={() => handleSelect(item)}>
-            {item.name}
-          </button>
-        ))}
+        {isOpen && (
+          <div>
+            {names.map((item) => (
+              <button key={item.id} onClick={() => handleSelect(item)}>
+                {item.name}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
