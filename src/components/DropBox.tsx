@@ -1,5 +1,5 @@
 import type { IName } from "../types/name";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 interface DropBox {
   names: IName[];
 }
@@ -7,6 +7,26 @@ interface DropBox {
 const DropBox = ({ names }: DropBox) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<IName | null>(null);
+  const dropBoxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropBoxRef.current &&
+        !dropBoxRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   const handleToggle = () => {
     setIsOpen((prev) => !prev);
@@ -18,7 +38,7 @@ const DropBox = ({ names }: DropBox) => {
   };
   return (
     <div className="min-h-screen w-full bg-gray-350 p-4 flex justify-center items-start">
-      <div className="relative min-w-[100px]">
+      <div className="relative min-w-[100px] " ref={dropBoxRef}>
         <button
           onClick={handleToggle}
           className="w-full bg-white border border-black rounded-sm px-[10px] py-[6px] flex items-start justify-between  focus:outline-none"
