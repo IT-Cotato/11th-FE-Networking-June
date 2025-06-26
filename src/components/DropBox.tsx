@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import type { IName } from "../types/name";
 import styled, { keyframes } from "styled-components";
 import Chevron from "../assets/chevron-up.svg";
 import { useOutsideClick } from "./../hooks/useOutSideClick";
+import { useAnimatedUnmount } from "../hooks/useAnimatedUnmount";
 
 interface DropBox {
   names: IName[];
@@ -32,20 +33,14 @@ const slideOut = keyframes`
 
 const DropBox = ({ names }: DropBox) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [shouldRender, setShouldRender] = useState(false);
-  const [selectedName, setSelectedName] = useState<IName | null>(null);
+  const [selectedName, setSelectedName] = useState<IName>({
+    id: 2,
+    name: "김초연",
+  });
   const dropboxRef = useRef<HTMLDivElement>(null);
+  const { shouldRender, ref } = useAnimatedUnmount(isOpen);
 
   useOutsideClick(dropboxRef, () => setIsOpen(false));
-
-  useEffect(() => {
-    if (isOpen) {
-      setShouldRender(true);
-    } else {
-      const timer = setTimeout(() => setShouldRender(false), 300);
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen]);
 
   const toggleOpen = () => setIsOpen((prev) => !prev);
 
@@ -57,11 +52,11 @@ const DropBox = ({ names }: DropBox) => {
   return (
     <Container ref={dropboxRef}>
       <DropBoxButton onClick={toggleOpen}>
-        {selectedName?.name || "김초연"}
+        {selectedName.name}
         <ChevronImg src={Chevron} $isOpen={isOpen} />
       </DropBoxButton>
       {shouldRender && (
-        <Options $isOpen={isOpen}>
+        <Options ref={ref} $isOpen={isOpen}>
           {names.map((name) => (
             <OptionItems key={name.id} onClick={() => handleSelect(name)}>
               {name.name}
@@ -77,6 +72,7 @@ export default DropBox;
 
 const Container = styled.div`
   width: 100px;
+  height: 300px;
 `;
 
 const DropBoxButton = styled.button`
@@ -111,6 +107,7 @@ const Options = styled.ul<{ $isOpen: boolean }>`
   animation-duration: 0.3s;
 `;
 
-const OptionItems = styled.div`
+const OptionItems = styled.li`
   cursor: pointer;
+  list-style: none;
 `;
