@@ -24,6 +24,7 @@ const DropBox = ({ names }: DropBox) => {
           names={names}
           ref={optionsRef}
           setSelected={setSelected}
+          setShow={setShow}
         />
       )}
     </div>
