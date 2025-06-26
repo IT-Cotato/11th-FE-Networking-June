@@ -1,11 +1,13 @@
 import type { IName } from "../types/name";
 import { useState, useRef, useEffect } from "react";
+
 interface DropBox {
   names: IName[];
 }
 
 const DropBox = ({ names }: DropBox) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [selected, setSelected] = useState<IName | null>(null);
   const dropBoxRef = useRef<HTMLDivElement>(null);
 
@@ -15,7 +17,7 @@ const DropBox = ({ names }: DropBox) => {
         dropBoxRef.current &&
         !dropBoxRef.current.contains(event.target as Node)
       ) {
-        setIsOpen(false);
+        handleClose();
       }
     };
 
@@ -29,13 +31,30 @@ const DropBox = ({ names }: DropBox) => {
   }, [isOpen]);
 
   const handleToggle = () => {
-    setIsOpen((prev) => !prev);
+    if (isOpen) {
+      handleClose();
+    } else {
+      setIsOpen(true);
+      setIsClosing(false);
+    }
+  };
+
+  const handleClose = () => {
+    if (!isOpen) return;
+
+    setIsClosing(true);
+
+    setTimeout(() => {
+      setIsOpen(false);
+      setIsClosing(false);
+    }, 400);
   };
 
   const handleSelect = (item: IName) => {
     setSelected(item);
-    setIsOpen(false);
+    handleClose();
   };
+
   return (
     <div className="min-h-screen w-full bg-gray-350 p-4 flex justify-center items-start">
       <div className="relative min-w-[100px] " ref={dropBoxRef}>
@@ -56,13 +75,21 @@ const DropBox = ({ names }: DropBox) => {
             />
           </div>
         </button>
-        {isOpen && (
-          <div className="absolute top-full left-0 right-0 mt-[2px] bg-white rounded-sm py-2 z-10 flex flex-col">
+        {(isOpen || isClosing) && (
+          <div
+            className={`absolute top-full left-0 right-0 mt-[2px] bg-white rounded-sm z-10 flex flex-col overflow-hidden ${
+              isOpen && !isClosing
+                ? "slide-fade-in-dropdown"
+                : isClosing
+                ? "slide-fade-out-dropdown"
+                : ""
+            }`}
+          >
             {names.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleSelect(item)}
-                className="w-full text-left px-2 py-[6px] hover:bg-gray-100 rounded-sm"
+                className="w-full text-left px-2 py-[6px] hover:bg-gray-100 rounded-sm" /* padding 유지 */
               >
                 {item.name}
               </button>
