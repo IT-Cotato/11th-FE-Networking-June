@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { IName } from "../types/name";
 import styled, { keyframes } from "styled-components";
 import Chevron from "../assets/chevron-up.svg";
@@ -32,8 +32,20 @@ const slideOut = keyframes`
 
 const DropBox = ({ names }: DropBox) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [shouldRender, setShouldRender] = useState(false);
   const [selectedName, setSelectedName] = useState<IName | null>(null);
   const dropboxRef = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(dropboxRef, () => setIsOpen(false));
+
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+    } else {
+      const timer = setTimeout(() => setShouldRender(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
 
   const toggleOpen = () => setIsOpen((prev) => !prev);
 
@@ -42,21 +54,21 @@ const DropBox = ({ names }: DropBox) => {
     setIsOpen(false);
   };
 
-  useOutsideClick(dropboxRef, () => setIsOpen(false));
-
   return (
     <Container ref={dropboxRef}>
       <DropBoxButton onClick={toggleOpen}>
         {selectedName?.name || "김초연"}
         <ChevronImg src={Chevron} $isOpen={isOpen} />
       </DropBoxButton>
-      <Options $isOpen={isOpen}>
-        {names.map((name) => (
-          <OptionItems key={name.id} onClick={() => handleSelect(name)}>
-            {name.name}
-          </OptionItems>
-        ))}
-      </Options>
+      {shouldRender && (
+        <Options $isOpen={isOpen}>
+          {names.map((name) => (
+            <OptionItems key={name.id} onClick={() => handleSelect(name)}>
+              {name.name}
+            </OptionItems>
+          ))}
+        </Options>
+      )}
     </Container>
   );
 };
