@@ -10,14 +10,14 @@ interface DropBox {
 }
 
 const DropBox = ({ names }: DropBox) => {
-  const optionsRef = useRef<HTMLDivElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const [show, setShow] = useState(false);
   const [isRendered, setIsRendered] = useState(false);
   const [active, setActive] = useState(false);
   const [selected, setSelected] = useState("조원영");
 
-  useOnClickOutside(optionsRef, () => setShow(false));
+  useOnClickOutside(dropdownRef, () => setShow(false));
 
   useEffect(() => {
     let openTimer: number;
@@ -44,7 +44,7 @@ const DropBox = ({ names }: DropBox) => {
   }, [show]);
 
   return (
-    <div className="flex w-100 flex-col items-start gap-2">
+    <div ref={dropdownRef} className="flex w-100 flex-col items-start gap-2">
       <DropBoxSelect name={selected} show={show} setShow={setShow} />
       {isRendered && (
         <div
@@ -58,7 +58,6 @@ const DropBox = ({ names }: DropBox) => {
         >
           <DropBoxOptions
             names={names}
-            ref={optionsRef}
             setSelected={setSelected}
             setShow={setShow}
           />
