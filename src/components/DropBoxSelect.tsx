@@ -21,7 +21,7 @@ const DropBoxSelect: React.FC<DropBoxSelectProps> = ({
     >
       <div className="w-56">{name}</div>
       <ChevronUp
-        className="w-24 h-24 aspect-square"
+        className="w-24 h-24 aspect-square transition-rotate duration-300 ease-out"
         style={{ transform: `rotate(${show ? 180 : 0}deg)` }}
       />
     </div>
