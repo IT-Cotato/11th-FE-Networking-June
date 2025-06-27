@@ -1,4 +1,5 @@
 import React from "react";
+import { ANIMATION_DURATION_BG } from "../constants/values";
 
 interface ItemBoxProps {
   name: string;
@@ -9,7 +10,7 @@ interface ItemBoxProps {
 const ItemBox: React.FC<ItemBoxProps> = ({ name, setSelected, setShow }) => {
   return (
     <div
-      className="self-stretch"
+      className={`self-stretch hover:bg-blue-100 transition-bg duration-${ANIMATION_DURATION_BG} ease-out`}
       onClick={() => {
         setSelected(name);
         setShow(false);
