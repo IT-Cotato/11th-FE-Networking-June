@@ -1,7 +1,23 @@
+@import "tailwindcss";
+
+:root {
+  color: #000;
+  font-family: "Pretendard";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
 body {
   margin: 0;
   width: 100vw;
   height: 100vh;
   display: grid;
   place-items: center;
+  background-color: #cecece;
+}
+
+@theme {
+  --spacing: 1px;
 }
