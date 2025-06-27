@@ -15,7 +15,7 @@ const DropBox = ({ names }: DropBox) => {
   const [show, setShow] = useState(false);
   const [isRendered, setIsRendered] = useState(false);
   const [active, setActive] = useState(false);
-  const [selected, setSelected] = useState("조원영");
+  const [selected, setSelected] = useState(6);
 
   useOnClickOutside(dropdownRef, () => setShow(false));
 
@@ -45,7 +45,11 @@ const DropBox = ({ names }: DropBox) => {
 
   return (
     <div ref={dropdownRef} className="flex w-100 flex-col items-start gap-2">
-      <DropBoxSelect name={selected} show={show} setShow={setShow} />
+      <DropBoxSelect
+        name={names[selected - 1].name}
+        show={show}
+        setShow={setShow}
+      />
       {isRendered && (
         <div
           className={`
@@ -57,7 +61,7 @@ const DropBox = ({ names }: DropBox) => {
           `}
         >
           <DropBoxOptions
-            names={names}
+            nameArray={names}
             setSelected={setSelected}
             setShow={setShow}
           />
